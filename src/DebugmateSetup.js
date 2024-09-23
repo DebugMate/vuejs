@@ -2,13 +2,15 @@ import { parse } from './stackTraceParser';
 import { Context } from './context';
 
 class DebugmateSetup {
-    constructor(options = {}) {
+    constructor(options = {}, nuxtContext = null) {
         this.domain = options.domain;
         this.token = options.token;
         this.enabled = options.enabled !== undefined ? options.enabled : true;
+        this.nuxtContext = nuxtContext;
+        this.checkAppContext = options.checkAppContext || this.defaultCheckAppContext;
     }
 
-    publish(error, request) {
+    publish(error, request, user = null) {
         if (!error || !this.enabled || !this.domain || !this.token) {
             return;
         }
@@ -16,7 +18,9 @@ class DebugmateSetup {
         const context = new Context();
         const appContext = this.checkAppContext();
 
-        if (appContext?.getUser) {
+        if (user) {
+            context.setUser(user);
+        } else if (appContext?.getUser) {
             context.setUser(appContext.getUser());
         }
 
@@ -28,7 +32,9 @@ class DebugmateSetup {
             context.setRequest(request);
         }
 
-        fetch(`${this.domain}/api/capture`, {
+        const fetchOptions = typeof fetch !== 'undefined' ? fetch : this.nuxtContext.$fetch;
+
+        fetchOptions(`${this.domain}/api/capture`, {
             method: 'POST',
             headers: {
                 'X-DEBUGMATE-TOKEN': this.token,
@@ -43,7 +49,11 @@ class DebugmateSetup {
                 }
             })
             .catch(err => {
-                console.error('Erro ao enviar erro para o Debugmate:', err);
+                if (this.nuxtContext) {
+                    this.nuxtContext.error({ statusCode: 500, message: 'Erro ao enviar erro para o Debugmate.' });
+                } else {
+                    console.error('Erro ao enviar erro para o Debugmate:', err);
+                }
             });
     }
 
@@ -81,8 +91,11 @@ class DebugmateSetup {
         ];
     }
 
-    checkAppContext() {
-        return null;
+    defaultCheckAppContext() {
+        return {
+            getUser: () => null, 
+            getEnvironment: () => process.env.NODE_ENV || 'unknown'
+        };
     }
 }
 
