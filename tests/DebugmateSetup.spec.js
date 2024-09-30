@@ -1,9 +1,9 @@
-import DebugmateSetup from '../src/DebugmateSetup';  // Ajuste para apontar diretamente ao arquivo correto
-import { Context } from '../src/context';  // Ajuste o caminho para apontar ao arquivo correto de contexto
-import { parse } from '../src/stackTraceParser';  // Ajuste o caminho para apontar ao arquivo correto de stackTraceParser
+import DebugmateSetup from '../src/DebugmateSetup';
+import { Context } from '../src/context';
+import { parse } from '../src/stackTraceParser';
 
-jest.mock('../src/context');  // Mock da classe Context
-jest.mock('../src/stackTraceParser');  // Mock do parse
+jest.mock('../src/context');
+jest.mock('../src/stackTraceParser');
 
 describe('DebugmateSetup', () => {
     const options = {
