@@ -4,10 +4,18 @@ export class Context {
         this.request = null;
         this.user = null;
         this.environment = null;
-        this.process = {
-            platform: navigator.platform,
-            version: navigator.appVersion,
-        };
+
+        if (typeof window !== 'undefined' && typeof navigator !== 'undefined') {
+            this.process = {
+                platform: navigator.platform,
+                version: navigator.appVersion,
+            };
+        } else {
+            this.process = {
+                platform: 'server',
+                version: process.version || 'unknown',
+            };
+        }
     }
 
     setError(error) {
@@ -65,6 +73,8 @@ export class Context {
     }
 
     appRequest() {
+        if (typeof window === 'undefined') return {};
+
         const url = window.location.href;
         const queryParams = this.getQueryParams();
 
@@ -83,6 +93,8 @@ export class Context {
     }
 
     getQueryParams() {
+        if (typeof window === 'undefined') return {};
+
         const queryString = window.location.search.substring(1);
         const params = new URLSearchParams(queryString);
 
@@ -113,7 +125,7 @@ export class Context {
             server: this.environment?.server || 'unknown',
             database: this.environment?.database || 'unknown',
             npm: this.environment?.npm || 'unknown',
-            browser: navigator.userAgent || 'unknown',
+            browser: typeof navigator !== 'undefined' ? navigator.userAgent : 'unknown',
         };
 
         const systemContext = {

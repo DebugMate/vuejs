@@ -1,4 +1,14 @@
 function parse(error) {
+    if (!error || !error.stack || typeof error.stack !== 'string') {
+        console.warn('Invalid error object or missing stack trace:', error);
+
+        // Para SSR ou outros ambientes onde não há stack trace, retorna um valor padrão
+        return {
+            sources: [],
+            stack: 'No stack trace available'
+        };
+    }
+
     const stacklist = error.stack
         .replace(/\n+/g, "\n").split("\n")
         .filter((item, index, array) => {
@@ -16,10 +26,10 @@ function parse(error) {
         if (sp && sp.length === 5) {
             sources.push(
                 {
-                    function: sp[1],
-                    file: sp[2],
-                    line: sp[3],
-                    column: sp[4],
+                    function: sp[1] || 'anonymous',
+                    file: sp[2] || 'unknown',
+                    line: sp[3] || '0',
+                    column: sp[4] || '0',
                 }
             );
         }
