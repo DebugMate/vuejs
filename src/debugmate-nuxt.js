@@ -34,8 +34,7 @@ export default defineNuxtPlugin((nuxtApp) => {
 
     if (process.server) {
         nuxtApp.hook('render:errorMiddleware', (err, req, res, next) => {
-            console.log('Erro capturado no middleware do servidor:', err);
-            debugmate.publish(err);  // Publish agora já envia diretamente para a API
+            debugmate.publish(err);
             next(err);
         });
     }
