@@ -1,3 +1,4 @@
+import { defineNuxtPlugin } from '#app';
 import DebugmateSetup from './DebugmateSetup';
 
 export default defineNuxtPlugin((nuxtApp) => {
