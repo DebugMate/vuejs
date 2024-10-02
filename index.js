@@ -1,4 +1,2 @@
-import DebugmateVue from './src/debugmate-vue';
-import DebugmateNuxt from "./src/debugmate-nuxt";
-
-export default { DebugmateVue, DebugmateNuxt };
+export { default as DebugmateVue } from './src/debugmate-vue';
+export { default as DebugmateNuxt } from './src/debugmate-nuxt';
