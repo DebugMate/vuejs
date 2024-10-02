@@ -1,4 +1,4 @@
-import { defineNuxtPlugin } from '#app';
+import { defineNuxtPlugin, useRuntimeConfig } from '#app';
 import DebugmateSetup from './DebugmateSetup';
 
 export default defineNuxtPlugin((nuxtApp) => {
