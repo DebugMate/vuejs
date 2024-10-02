@@ -8,17 +8,15 @@ class DebugmateSetup {
         this.token = options.token;
         this.enabled = options.enabled !== undefined ? options.enabled : true;
         this.nuxtContext = nuxtContext;
-        this.user = null;  // Variável para armazenar o usuário global
-        this.environment = null;  // Variável para armazenar o ambiente global
+        this.user = null;
+        this.environment = null;
         this.checkAppContext = options.checkAppContext || this.defaultCheckAppContext;
     }
 
-    // Método para definir o usuário globalmente
     setUser(user) {
         this.user = user;
     }
 
-    // Método para definir o ambiente globalmente
     setEnvironment(environment) {
         this.environment = environment;
     }
@@ -31,14 +29,12 @@ class DebugmateSetup {
         const context = new Context();
         const appContext = this.checkAppContext();
 
-        // Se um usuário global foi definido, use-o; caso contrário, use o do contexto da aplicação
         if (this.user) {
             context.setUser(this.user);
         } else if (appContext?.getUser) {
             context.setUser(appContext.getUser());
         }
 
-        // Se um ambiente global foi definido, use-o; caso contrário, use o do contexto da aplicação
         if (this.environment) {
             context.setEnvironment(this.environment);
         } else if (appContext?.getEnvironment) {

@@ -6,11 +6,7 @@ export default defineNuxtPlugin((nuxtApp) => {
         token: useRuntimeConfig().public.DEBUGMATE_TOKEN,
         enabled: useRuntimeConfig().public.DEBUGMATE_ENABLED !== undefined ? useRuntimeConfig().public.DEBUGMATE_ENABLED === 'true' : true,
         checkAppContext: () => ({
-            getUser: () => ({
-                id: '456',
-                name: 'Jane Doe',
-                email: 'jane@example.com',
-            }),
+            getUser: () => null,
             getEnvironment: () => ({
                 environment: nuxtApp.ssrContext ? 'server' : 'client',
                 version: process.env.APP_VERSION || '1.0.0',

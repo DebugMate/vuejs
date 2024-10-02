@@ -12,11 +12,11 @@ export function sendToApi(payload, domain, token, fetchOptions) {
     })
         .then(response => {
             if (!response.ok) {
-                throw new Error(`Erro na requisição: ${response.status}`);
+                throw new Error(`Request error: ${response.status}`);
             }
         })
         .catch(error => {
-            console.error('Erro ao enviar erro para Debugmate:', error);
+            console.error('Error to send to Debugmate API:', error);
             throw error;
         });
 }

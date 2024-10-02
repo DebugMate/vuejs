@@ -2,7 +2,6 @@ function parse(error) {
     if (!error || !error.stack || typeof error.stack !== 'string') {
         console.warn('Invalid error object or missing stack trace:', error);
 
-        // Para SSR ou outros ambientes onde não há stack trace, retorna um valor padrão
         return {
             sources: [],
             stack: 'No stack trace available'
