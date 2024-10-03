@@ -3,6 +3,12 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
+  "exports": {
+    ".": "./index.js",
+    "./vue": "./src/debugmate-vue.js",
+    "./nuxt": "./src/debugmate-nuxt.js"
+  },
   "scripts": {
     "test": "jest"
   },

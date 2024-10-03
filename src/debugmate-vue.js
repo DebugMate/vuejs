@@ -1,6 +1,6 @@
 import DebugmateSetup from './DebugmateSetup';
 
-const Debugmate = {
+const DebugmateVue = {
     install(app, options = {}, nuxtContext = null) {
         const debugmate = new DebugmateSetup(options, nuxtContext);
 
@@ -27,4 +27,4 @@ const Debugmate = {
     }
 };
 
-export default Debugmate;
+export default DebugmateVue;
