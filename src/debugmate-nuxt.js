@@ -21,11 +21,15 @@ export default defineNuxtPlugin((nuxtApp) => {
 
     if (process.client) {
         window.onerror = function (message, source, lineno, colno, error) {
-            debugmate.publish(error);
+            debugmate.publish(error || new Error(message));
         };
 
         window.onunhandledrejection = function (event) {
-            debugmate.publish(event.reason);
+            const reason =
+                event.reason instanceof Error
+                    ? event.reason
+                    : new Error(`Unhandled rejection: ${event.reason}`);
+            debugmate.publish(reason);
         };
     }
 
