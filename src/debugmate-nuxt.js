@@ -1,3 +1,9 @@
+if (typeof defineNuxtPlugin === 'undefined' || typeof useRuntimeConfig === 'undefined') {
+    throw new Error(
+        'debugmate-nuxt.js is intended to be used only in Nuxt.js projects. Ensure you are importing it correctly.'
+    );
+}
+
 /**
  * Nuxt.js plugin for integrating DebugMate error tracking.
  * 

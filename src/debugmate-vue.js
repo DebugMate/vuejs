@@ -27,8 +27,14 @@ const DebugmateVue = {
                 event.preventDefault();
                 console.error('Unhandled Rejection captured:', event.reason);
 
+                const error =
+                    event.reason instanceof Error
+                        ? event.reason
+                        : new Error(`Unhandled rejection: ${event.reason}`);
+
+
                 if (app.config.globalProperties.$debugmate) {
-                    app.config.globalProperties.$debugmate.publish(event.reason);
+                    app.config.globalProperties.$debugmate.publish(error);
                 }
             });
         }
