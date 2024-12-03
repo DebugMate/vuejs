@@ -1,6 +1,6 @@
 {
   "name": "@debugmate/vuejs",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "DebugMate: An error tracking library for Vue & Nuxt applications",
   "main": "index.js",
   "type": "module",
