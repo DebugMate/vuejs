@@ -18,10 +18,7 @@ To install the Debugmate package, use npm or yarn:
 
 ```bash
 # NPM
-npm install debugmate-vuejs --save
-
-# Yarn
-yarn add debugmate-vuejs
+npm i @debugmate/vuejs
 ```
 
 ### **2. Configuration**
