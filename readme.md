@@ -70,10 +70,20 @@ This will automatically register the plugin for your Nuxt application.
 
 After configuring Debugmate in Vue.js, it will automatically start capturing errors. Errors like `window.onerror` and `window.onunhandledrejection` are monitored out-of-the-box.
 
-If you need to manually report an error, you can use the `publish` method provided by Debugmate:
+You can manually report errors using the useDebugmate hook. The hook gives you access to the Debugmate instance directly.
 
 ```js
-app.config.globalProperties.$debugmate.publish(new Error('Custom error message'));
+import useDebugmate from "debugmate-vuejs/useDebugmate";
+
+const debugmate = useDebugmate();
+
+const reportError = () => {
+  if (debugmate) {
+    debugmate.publish(new Error('Simulated error from useDebugmate hook'));
+  } else {
+    console.error('Debugmate instance not available');
+  }
+};
 ```
 
 ### **4. Usage in Nuxt.js**
@@ -92,13 +102,17 @@ You can dynamically inject user and environment data using the `setUser` and `se
 #### **Example in Vue.js:**
 
 ```js
-app.config.globalProperties.$debugmate.setUser({
+import useDebugmate from "debugmate-vuejs/useDebugmate";
+
+const debugmate = useDebugmate();
+
+debugmate.setUser({
     id: '123',
     name: 'Jane Doe',
     email: 'jane@example.com'
 });
 
-app.config.globalProperties.$debugmate.setEnvironment({
+debugmate.setEnvironment({
     environment: 'client',
     version: '1.0.0',
     timezone: 'America/New_York'
