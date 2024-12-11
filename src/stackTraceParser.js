@@ -1,3 +1,11 @@
+/**
+ * Parses an Error object to extract detailed stack trace information.
+ *
+ * @param {Error} error - The Error object to be parsed.
+ * @returns {Object} An object containing:
+ *  - `sources`: Array of parsed stack trace details (file, line, column, and function).
+ *  - `stack`: The complete stack trace as a single string.
+ */
 function parse(error) {
     if (!error || !error.stack || typeof error.stack !== 'string') {
         console.warn('Invalid error object or missing stack trace:', error);
@@ -9,30 +17,31 @@ function parse(error) {
     }
 
     const stacklist = error.stack
-        .replace(/\n+/g, "\n").split("\n")
+        .replace(/\n+/g, "\n")
+        .split("\n")
         .filter((item, index, array) => {
             if (!!item) {
                 return index === array.indexOf(item);
             }
         });
 
-    let stackReg = /at\s+(.*)\s+\((.*):(\d*):(\d*)\)/gi;
-    let stackReg2 = /at\s+()(.*):(\d*):(\d*)/gi;
+    const stackReg = /at\s+(.*)\s+\((.*):(\d*):(\d*)\)/gi;
+    const stackReg2 = /at\s+()(.*):(\d*):(\d*)/gi;
 
     const sources = [];
+
     stacklist.forEach((item) => {
-        var sp = stackReg.exec(item) || stackReg2.exec(item);
-        if (sp && sp.length === 5) {
-            sources.push(
-                {
-                    function: sp[1] || 'anonymous',
-                    file: sp[2] || 'unknown',
-                    line: sp[3] || '0',
-                    column: sp[4] || '0',
-                }
-            );
+        const match = stackReg.exec(item) || stackReg2.exec(item);
+        if (match && match.length === 5) {
+            sources.push({
+                function: match[1] || 'anonymous',
+                file: match[2] || 'unknown',
+                line: match[3] || '0',
+                column: match[4] || '0',
+            });
         }
     });
+
     const stack = stacklist.join('\n');
 
     return { sources, stack };

@@ -1,3 +1,15 @@
+/**
+ * Sends error payload data to the DebugMate API.
+ * 
+ * @param {Object} payload - The data payload to send, including error details and context.
+ * @param {string} domain - The base URL of the DebugMate API.
+ * @param {string} token - The API token used for authentication.
+ * @param {Function} fetchOptions - The fetch function or equivalent to use for the HTTP request.
+ * 
+ * @returns {Promise<void>} - Resolves if the request is successful, otherwise throws an error.
+ * 
+ * @throws {Error} Throws an error if the request fails or the response status is not OK.
+ */
 export function sendToApi(payload, domain, token, fetchOptions) {
     const apiEndpoint = `${domain}/api/capture`;
 
