@@ -1,7 +1,7 @@
 {
-  "name": "debugmate-vuejs",
-  "version": "1.0.0",
-  "description": "",
+  "name": "@debugmate/vuejs",
+  "version": "1.1.0",
+  "description": "DebugMate: An error tracking library for Vue & Nuxt applications",
   "main": "index.js",
   "type": "module",
   "exports": {
@@ -13,9 +13,25 @@
   "scripts": {
     "test": "jest"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "error-tracking",
+    "debugmate",
+    "vue",
+    "monitoring",
+    "error-handling",
+    "debugging",
+    "nuxt"
+  ],
+  "author": {
+    "name": "DevSquad",
+    "url": "https://devsquad.com/"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DebugMate/vuejs"
+  },
+  "homepage": "https://github.com/DebugMate/vuejs#readme",
   "dependencies": {
     "axios": "^1.7.7"
   },

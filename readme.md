@@ -18,11 +18,13 @@ To install the Debugmate package, use npm or yarn:
 
 ```bash
 # NPM
-npm install debugmate-vuejs --save
+npm i @debugmate/vuejs
 
-# Yarn
-yarn add debugmate-vuejs
+# yarn
+
+yarn add @debugmate/vuejs
 ```
+
 
 ### **2. Configuration**
 
@@ -35,7 +37,7 @@ In Vue.js, import the Vue-specific plugin and install it in your `main.js`:
 ```js
 import { createApp } from 'vue';
 import App from './App.vue';
-import DebugmateVue from 'debugmate-vuejs/vue'; 
+import DebugmateVue from '@debugmate/vuejs/vue'; 
 
 const app = createApp(App);
 
@@ -57,13 +59,16 @@ In Nuxt.js, import the **Nuxt-specific** plugin directly from the package in the
 ```js
 export default {
     runtimeConfig: {
-        public: {
-            DEBUGMATE_DOMAIN: process.env.DEBUGMATE_DOMAIN || 'https://api.debugmate.com',
-            DEBUGMATE_TOKEN: process.env.DEBUGMATE_TOKEN || 'your-token',
-            DEBUGMATE_ENABLED: process.env.DEBUGMATE_ENABLED || 'true',
-        }
+      public: {
+          DEBUGMATE_DOMAIN: process.env.DEBUGMATE_DOMAIN || 'https://api.debugmate.com',
+          DEBUGMATE_TOKEN: process.env.DEBUGMATE_TOKEN || 'your-token',
+          DEBUGMATE_ENABLED: process.env.DEBUGMATE_ENABLED || 'true',
+      }
     },
-    plugins: ['debugmate-vuejs/nuxt']  // Use Nuxt-specific version
+    plugins: ['@debugmate/vuejs/nuxt'],
+    build: {
+        transpile: ['@debugmate/vuejs']
+    }
 }
 ```
 
@@ -76,7 +81,7 @@ After configuring Debugmate in Vue.js, it will automatically start capturing err
 You can manually report errors using the useDebugmate hook. The hook gives you access to the Debugmate instance directly.
 
 ```js
-import useDebugmate from "debugmate-vuejs/useDebugmate";
+import useDebugmate from "@debugmate/vuejs/useDebugmate";
 
 const debugmate = useDebugmate();
 
@@ -105,7 +110,7 @@ You can dynamically inject user and environment data using the `setUser` and `se
 #### **Example in Vue.js:**
 
 ```js
-import useDebugmate from "debugmate-vuejs/useDebugmate";
+import useDebugmate from "@debugmate/vuejs/useDebugmate";
 
 const debugmate = useDebugmate();
 
@@ -166,8 +171,8 @@ By following this guide, you can easily integrate Debugmate for error monitoring
 
 ### **Conclusion**
 
-- Use `debugmate-vuejs/vue` for **Vue.js**.
-- Use `debugmate-vuejs/nuxt` for **Nuxt.js**.
+- Use `@debugmate/vuejs/vue` for **Vue.js**.
+- Use `@debugmate/vuejs/nuxt` for **Nuxt.js**.
 
 This separation makes it clear which version of the plugin is used for each framework, ensuring better maintainability and clarity.
 
