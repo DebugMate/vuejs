@@ -21,7 +21,6 @@ To install the Debugmate package, use npm or yarn:
 npm i @debugmate/vuejs
 
 # yarn
-
 yarn add @debugmate/vuejs
 ```
 
