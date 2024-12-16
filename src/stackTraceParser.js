@@ -1,3 +1,4 @@
+import StackTrace from "stacktrace-js";
 /**
  * Parses an Error object to extract detailed stack trace information.
  *
@@ -6,45 +7,27 @@
  *  - `sources`: Array of parsed stack trace details (file, line, column, and function).
  *  - `stack`: The complete stack trace as a single string.
  */
-function parse(error) {
-    if (!error || !error.stack || typeof error.stack !== 'string') {
+async function parse(error) {
+    if (!error?.stack) {
         console.warn('Invalid error object or missing stack trace:', error);
-
-        return {
-            sources: [],
-            stack: 'No stack trace available'
-        };
+        return [];
     }
 
-    const stacklist = error.stack
-        .replace(/\n+/g, "\n")
-        .split("\n")
-        .filter((item, index, array) => {
-            if (!!item) {
-                return index === array.indexOf(item);
-            }
-        });
-
-    const stackReg = /at\s+(.*)\s+\((.*):(\d*):(\d*)\)/gi;
-    const stackReg2 = /at\s+()(.*):(\d*):(\d*)/gi;
-
-    const sources = [];
-
-    stacklist.forEach((item) => {
-        const match = stackReg.exec(item) || stackReg2.exec(item);
-        if (match && match.length === 5) {
-            sources.push({
-                function: match[1] || 'anonymous',
-                file: match[2] || 'unknown',
-                line: match[3] || '0',
-                column: match[4] || '0', 
-            });
-        }
-    });
-
-    const stack = stacklist.join('\n');
-
-    return { sources, stack };
+    try {
+        const stackFrames = await StackTrace.fromError(error);
+        return stackFrames.map(frame => ({
+            function: frame.functionName || 'anonymous',
+            file: frame.fileName || 'unknown',
+            line: frame.lineNumber || 0,
+            column: frame.columnNumber || 0,
+            name: error.name,
+            message: error.message,
+        }));
+    } catch (err) {
+        console.error('Failed to parse stack trace:', err);
+        return [];
+    }
 }
+
 
 export { parse };
