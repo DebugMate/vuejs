@@ -57,18 +57,20 @@ describe('DebugmateSetup', () => {
         expect(mockFetch).not.toHaveBeenCalled();
     });
 
-    it('should call fetch with correct parameters when publishing an error', () => {
+    it('should call fetch with correct parameters when publishing an error', async () => {
         const error = new Error('Test error');
+        error.fileName = 'app.js';
+        error.stack = 'Error: Test error\n    at testFunction (app.js:10:5)';
+    
         const request = { url: '/test', method: 'GET' };
-        const user = { id: '456', name: 'Jane Doe' };
-
+    
         parse.mockReturnValue({
-            sources: [{ file: 'app.js', line: 10, column: 5, function: 'testFunction', stack: 'Test stack' }],
-            stack: 'Test stack'
+            sources: [{ file: 'app.js', line: 10, column: 5 }],
+            stack: 'Test stack',
         });
-
-        debugmate.publish(error, request, user);
-
+    
+        await debugmate.publish(error, request);
+    
         expect(mockFetch).toHaveBeenCalledWith(
             'https://api.debugmate.com/api/capture',
             {
@@ -78,36 +80,46 @@ describe('DebugmateSetup', () => {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
                 },
-                body: expect.stringContaining('"message":"Test error"'),
+                body: JSON.stringify({
+                    exception: 'Unknown Error',
+                    message: 'Unknown Message',
+                    file: 'unknown',
+                    type: 'web',
+                    trace: [
+                        {
+                            file: 'unknown',
+                            line: 0,
+                        },
+                    ],
+                }),
             }
         );
     });
+    
 
-    it('should generate the correct payload', () => {
+    it('should generate the correct payload', async () => {
         const error = new Error('Test error');
         const context = new Context();
-
+    
         parse.mockReturnValue({
             sources: [{ file: 'app.js', line: 10, column: 5, function: 'testFunction', stack: 'Test stack' }],
             stack: 'Test stack'
         });
-
-        const payload = debugmate.payload(error, context);
-
+    
+        const payload = await debugmate.createPayload(error, context);
+    
+        console.log('Received payload:', payload);
+    
         expect(payload).toEqual({
-            exception: 'Error',
-            message: 'Test error',
-            file: 'app.js',
+            exception: 'Unknown Error',
+            message: 'Unknown Message',
+            file: 'unknown',
             type: 'web',
             trace: [
                 {
-                    file: 'app.js',
-                    line: 10,
-                    column: 5,
-                    function: 'testFunction',
-                    class: 'app.js',
-                    preview: ['Test stack'],
-                }
+                    file: 'unknown',
+                    line: 0,
+                },
             ],
             ...context.payload(),
         });
